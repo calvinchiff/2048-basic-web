@@ -2,20 +2,17 @@ class Grid {
 	constructor(size) {
 		this.size = size;
 		this.grid = Array.from({ length: size }, () => Array(size).fill(0));
+		this.score = 0;
 	}
 
 	initializeGrid() {
 		this.addNewTile();
 		this.addNewTile();
-		// this.grid[0][0] = 4;
 	}
 
 	displayGrid() {
-		// console.clear();
+		console.log("Score: " + this.score);
 		console.table(this.grid);
-		// for (let row of this.grid) {
-		// 	console.log(row);
-		// }
 	}
 
 	addNewTile() {
@@ -57,6 +54,7 @@ class Grid {
 			if (newRow[i] === newRow[i + 1] && newRow[i] != 0 && newRow[i]) {
 				newRow[i] *= 2;
 				newRow[i + 1] = 0;
+				this.score += newRow[i];
 			}
 		}
 
@@ -109,6 +107,7 @@ class Grid {
 	checkMove(direction) {
 		//check if the given direction allows tiles to move or shift
 		const originalGrid = JSON.stringify(this.grid);
+		const originalScore = this.score;
 
 		if (direction === "q") this.moveLeft();
 		else if (direction === "d") this.moveRight();
@@ -116,9 +115,8 @@ class Grid {
 		else if (direction === "s") this.moveDown();
 
 		const afterMove = JSON.stringify(this.grid);
-
 		this.grid = JSON.parse(originalGrid);
-
+		this.score = originalScore;
 		return afterMove !== originalGrid;
 	}
 
